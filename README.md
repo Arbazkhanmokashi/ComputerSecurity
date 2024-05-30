@@ -21,3 +21,10 @@ This repository contains a chat web application specifically designed for securi
 -Review security headers: Confirm the use of HTTP headers to mitigate vulnerabilities.
 
 -Monitor logging: Ensure effective logging and monitoring for suspicious activities.
+
+
+## Group Members 
+### Arbazkhan Mokashi  -  20024926
+### Sahil Sinha -                   20027911
+### Akshey Nambly -           20021331
+### Dharma Sai -                  20025435
