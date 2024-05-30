@@ -1,8 +1,11 @@
-# Computer_Systems_Security
-**Overview**
+# Google Doc Link- https://docs.google.com/document/d/1FoM--O3qouWkq49NYFPrkCzGppI6in6KmD4JUpTL5yU/edit
+
+
+## Computer_Systems_Security
+### Overview
 This repository contains a chat web application specifically designed for security testing. The main objective is to identify and address security vulnerabilities within the application.
 
-**Security Testing Objectives**
+### Security Testing Objectives
 -Identify vulnerabilities: Use various tools and techniques to uncover security flaws.
 
 -Test encryption: Ensure messages are properly encrypted in transit and at rest.
