@@ -1,0 +1,93 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Chat Application</title>
+</head>
+<body>
+    <h1>Secure Chat Application</h1>
+    <div>
+        <h2>Register</h2>
+        <form id="registerForm">
+            <input type="text" id="username" placeholder="Username" required>
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button type="submit">Register</button>
+        </form>
+    </div>
+    <div>
+        <h2>Login</h2>
+        <form id="loginForm">
+            <input type="email" id="loginEmail" placeholder="Email" required>
+            <input type="password" id="loginPassword" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+    <div>
+        <h2>Send Message</h2>
+        <form id="sendMessageForm">
+            <input type="text" id="senderId" placeholder="Sender ID" required>
+            <input type="text" id="receiverId" placeholder="Receiver ID" required>
+            <textarea id="message" placeholder="Message" required></textarea>
+            <button type="submit">Send Message</button>
+        </form>
+    </div>
+    <div>
+        <h2>Receive Messages</h2>
+        <form id="receiveMessagesForm">
+            <input type="text" id="userId" placeholder="User ID" required>
+            <button type="submit">Receive Messages</button>
+        </form>
+        <div id="messages"></div>
+    </div>
+    <script>
+        document.getElementById('registerForm').onsubmit = async function(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const response = await fetch('/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, email, password })
+            });
+            const data = await response.json();
+            alert(data.message);
+        };
+
+        document.getElementById('loginForm').onsubmit = async function(event) {
+            event.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const response = await fetch('/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+            const data = await response.json();
+            alert(data.message);
+        };
+
+        document.getElementById('sendMessageForm').onsubmit = async function(event) {
+            event.preventDefault();
+            const senderId = document.getElementById('senderId').value;
+            const receiverId = document.getElementById('receiverId').value;
+            const message = document.getElementById('message').value;
+            const response = await fetch('/send_message', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ sender_id: senderId, receiver_id: receiverId, message })
+            });
+            const data = await response.json();
+            alert(data.message);
+        };
+
+        document.getElementById('receiveMessagesForm').onsubmit = async function(event) {
+            event.preventDefault();
+            const userId = document.getElementById('userId').value;
+            const response = await fetch('/receive_messages', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify
