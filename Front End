@@ -27,8 +27,7 @@
     </div>
     <div>
         <h2>Send Message</h2>
-        <form id="sendMessageForm"?
-    
+        <form id="sendMessageForm">
             <input type="text" id="senderId" placeholder="Sender ID" required>
             <input type="text" id="receiverId" placeholder="Receiver ID" required>
             <textarea id="message" placeholder="Message" required></textarea>
