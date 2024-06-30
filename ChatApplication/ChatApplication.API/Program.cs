@@ -15,7 +15,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+//the application will listen for requests on http://localhost:5258/swagger
 app.UseAuthorization();
 
 app.MapControllers();
