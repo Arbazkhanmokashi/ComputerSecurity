@@ -54,7 +54,7 @@
                 body: JSON.stringify({ username, email, password })
             });
             const data = await response.json();
-            alert(data.message);
+            alert(data.message):
         };
 
         document.getElementById('loginForm').onsubmit = async function(event) {
