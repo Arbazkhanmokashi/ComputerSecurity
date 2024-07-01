@@ -1,3 +1,5 @@
+using ChatApplication.API.Hub;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +8,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+//SignalR for real time communication
 builder.Services.AddSignalR();
 
 var app = builder.Build();
@@ -16,8 +19,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-//the application will listen for requests on http://localhost:5258/swagger
-app.UseAuthorization();
+
+app.UseEndpoints(endpoint => {
+    endpoint.MapHub<ChatHub>(pattern:"/chat")
+});
 
 app.MapControllers();
 
