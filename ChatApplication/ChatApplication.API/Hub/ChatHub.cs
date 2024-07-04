@@ -18,3 +18,11 @@ public class ChatHub : Microsoft.AspNetCore.SignalR.Hub
         await Clients.Group(userConnection.Room!)
             .SendAsync("ReceiveMessage", "Lets Program Bot", $"{userConnection.User} has Joined the Group", DateTime.Now);
         await 
+        SendConnectedUser(userConnection.Room!);
+    }
+
+    public async Task SendMessage(string message)
+    {
+        if (_connection.TryGetValue(Context.ConnectionId, out UserRoomConnection userRoomConnection))
+        {
+            await
