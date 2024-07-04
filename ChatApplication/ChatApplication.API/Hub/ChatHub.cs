@@ -51,3 +51,4 @@ _connection.Remove(Context.ConnectionId);
         return Clients.Group(room).SendAsync("ConnectedUser", users);
     }
     
+}
