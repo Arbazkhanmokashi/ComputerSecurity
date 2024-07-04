@@ -8,3 +8,8 @@ public class ChatHub : Microsoft.AspNetCore.SignalR.Hub
 
     public ChatHub(IDictionary<string, UserRoomConnection> connection)
     {
+        _connection = connection;
+    }
+
+    public async Task JoinRoom(UserRoomConnection userConnection)
+    {
