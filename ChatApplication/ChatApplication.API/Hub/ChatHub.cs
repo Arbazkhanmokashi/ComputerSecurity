@@ -1,6 +1,4 @@
 ﻿
-namespace ChatApplication.API.Hub
-    {
-    {
-    }
-}
+using Microsoft.AspNetCore.SignalR;
+
+namespace ChatApplicationYT.Hub;
