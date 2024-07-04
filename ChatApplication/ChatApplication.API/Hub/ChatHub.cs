@@ -33,4 +33,7 @@ Clients.Group(userRoomConnection.Room!)
     public override Task OnDisconnectedAsync(Exception? exp)
     {
         if 
-        
+(!_connection.TryGetValue(Context.ConnectionId, out UserRoomConnection roomConnection))
+        {
+            return base.OnDisconnectedAsync(exp);
+        }
