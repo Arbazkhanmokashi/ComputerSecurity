@@ -43,3 +43,11 @@ _connection.Remove(Context.ConnectionId);
         SendConnectedUser(roomConnection.Room!);
         return base.OnDisconnectedAsync(exp);
     }
+    public Task SendConnectedUser(string room)
+    {
+        var users = _connection.Values
+            .Where(u => u.Room == room)
+            .Select(s => s.User);
+        return Clients.Group(room).SendAsync("ConnectedUser", users);
+    }
+    
