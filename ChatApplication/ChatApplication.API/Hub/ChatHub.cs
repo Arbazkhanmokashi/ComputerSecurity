@@ -37,3 +37,9 @@ Clients.Group(userRoomConnection.Room!)
         {
             return base.OnDisconnectedAsync(exp);
         }
+_connection.Remove(Context.ConnectionId);
+        Clients.Group(roomConnection.Room!)
+            .SendAsync("ReceiveMessage", "Lets Program bot", $"{roomConnection.User} has Left the Group", DateTime.Now);
+        SendConnectedUser(roomConnection.Room!);
+        return base.OnDisconnectedAsync(exp);
+    }
