@@ -26,3 +26,7 @@ public class ChatHub : Microsoft.AspNetCore.SignalR.Hub
         if (_connection.TryGetValue(Context.ConnectionId, out UserRoomConnection userRoomConnection))
         {
             await
+Clients.Group(userRoomConnection.Room!)
+                .SendAsync("ReceiveMessage", userRoomConnection.User, message, DateTime.Now);
+        }
+    }            
