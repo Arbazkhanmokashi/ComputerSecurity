@@ -30,3 +30,7 @@ Clients.Group(userRoomConnection.Room!)
                 .SendAsync("ReceiveMessage", userRoomConnection.User, message, DateTime.Now);
         }
     }            
+    public override Task OnDisconnectedAsync(Exception? exp)
+    {
+        if 
+        
