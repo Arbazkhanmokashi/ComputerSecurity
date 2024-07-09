@@ -58,3 +58,12 @@ search" aria-hidden="true"></i> </button>
       </div>
     </div>
     <div *ngIf="message.user === loggedInUserName" class="sent_msg"
+    <p>{{message.message}}</p>
+                <span class="time_date">{{message.user}} | {{message.messageTime | date: 'medium'}}</span>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+        <div class="type_msg">
+          <div class="input_msg_write">
+            <input (keydown.enter)="sendMessage()" [(ngModel)]="inputMessage" type="text" class="write_msg"
