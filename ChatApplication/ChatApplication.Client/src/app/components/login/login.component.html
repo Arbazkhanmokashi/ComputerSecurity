@@ -36,3 +36,13 @@ search" aria-hidden="true"></i> </button>
           <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
           <div class="chat_ib mt-3">
             <h5>{{user}} <span class="online">
+</span></h5>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>
+</div>
+<div class="mesgs">
+<div #scrollMe class="msg_history">
+  <ng-container *ngFor="let message of this.chatService.messages$ | async">
