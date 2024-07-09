@@ -24,3 +24,10 @@ Users</h4>
 placeholder="Search">
      <span class="input-group-addon">
        <button type="button"> <i class="fa fa-
+search" aria-hidden="true"></i> </button>
+    </span>
+  </div>
+</div>
+</div>
+<div class="inbox_chat">
+<ng-container *ngFor="let user of this.chatService.connectedUsers$ | async">
