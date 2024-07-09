@@ -31,3 +31,8 @@ search" aria-hidden="true"></i> </button>
 </div>
 <div class="inbox_chat">
 <ng-container *ngFor="let user of this.chatService.connectedUsers$ | async">
+    <div class="chat_list">
+        <div class="chat_people">
+          <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+          <div class="chat_ib mt-3">
+            <h5>{{user}} <span class="online">
