@@ -6,14 +6,27 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class KeyStorageService {
+  private basePath = '/pub-keys';
 
   constructor(private db: AngularFireDatabase) { }
 
-  storePublicKey(userId: string, publicKey: string): Promise<void> {
-    return this.db.object(`users/${userId}`).set({ publicKey });
+  addItem(item: any): void {
+    this.db.list(this.basePath).push(item);
   }
 
-  getPublicKey(userId: string): Observable<any> {
-    return this.db.object(`users/${userId}/publicKey`).valueChanges();
+  getItems(): Observable<any[]> {
+    return this.db.list(this.basePath).valueChanges();
+  }
+
+  getItem(key: string): Observable<any> {
+    return this.db.object(`${this.basePath}/${key}`).valueChanges();
+  }
+
+  updateItem(key: string, value: any): void {
+    this.db.list(this.basePath).update(key, value);
+  }
+
+  deleteItem(key: string): void {
+    this.db.list(this.basePath).remove(key);
   }
 }
