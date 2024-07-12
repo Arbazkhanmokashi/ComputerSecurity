@@ -3,9 +3,12 @@ import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CredentialResponse, PromptMomentNotification } from 'google-one-tap';
 import { AuthService } from '../../services/auth/auth.service';
-import { last } from 'rxjs';
+import { BehaviorSubject, last, Observable } from 'rxjs';
 import { SessionService } from '../../services/session/session.service';
 import { environment } from '../../../environments/environment';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import firebase from 'firebase/compat/app';
+import { KeyStorageService } from '../../services/keyStorage/key-storage.service';
 
 @Component({
   selector: 'app-login',
@@ -14,6 +17,9 @@ import { environment } from '../../../environments/environment';
 })
 export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   public loginValid = true;
+  private userSubject = new BehaviorSubject<firebase.User | null>(null);
+  public user$ = this.userSubject.asObservable();
+  publicKey$!: Observable<any>;
 
   // private _destroySub$ = new Subject<void>();
   // private readonly returnUrl: string;
@@ -22,51 +28,23 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
     private _router: Router,
     private service: AuthService,
     private _ngZone: NgZone,
-    private sessionService: SessionService
+    private sessionService: SessionService,
+    private afAuth: AngularFireAuth,
+    private dbService: KeyStorageService
   ) {
-    // this.returnUrl = this._route.snapshot.queryParams['returnUrl'] || '/game';
   }
   ngAfterViewInit(): void {
-    this.initialiseGoogleOneTap();
+    //this.initialiseGoogleOneTap();
   }
 
   public ngOnInit(): void {
-    this.initialiseGoogleOneTap();
+    console.log("initialised")
+    //this.initialiseGoogleOneTap();
   }
 
-  initialiseGoogleOneTap(){
-    // @ts-ignore
-    window.onGoogleLibraryLoad = () => {
-      console.log('Google\'s One-tap sign in script loaded!');
-
-      // @ts-ignore
-      google.accounts.id.initialize({
-        // Ref: https://developers.google.com/identity/gsi/web/reference/js-reference#IdConfiguration
-        client_id: environment.googleClientId,
-        callback: this.handleCredentialResponse.bind(this), // Whatever function you want to trigger...
-        auto_select: false,
-        cancel_on_tap_outside: true
-      });
-
-      // @ts-ignore
-      google.accounts.id.renderButton(
-        // @ts-ignore
-        document.getElementById("googleBtn"),
-          { theme: "outline", size: "large", width: "100%"}
-      );
-      
-      // @ts-ignore
-      google.accounts.id.prompt((notification: PromptMomentNotification) => {})
-    };
-  }
-
-  async handleCredentialResponse(response: CredentialResponse){
-    console.log(response);
-    await this.service.GoogleLogin(response.credential).subscribe(x => {
-      console.log(x);
-      this.sessionService.saveDetails(x);
-      this._router.navigate(["/home"]);
-    });
+  getEmail() : void{
+    console.log(this.service.getUserEmail());
+    console.log(this.service.isLoggedIn())
   }
 
   public ngOnDestroy(): void {
