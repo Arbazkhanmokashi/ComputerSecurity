@@ -1,9 +1,4 @@
-mat-card {
-    max-width: 400px;
-    margin: 2em auto;
-    text-align: center;
-}
-  
-mat-form-field {
-    display: block;
+.btn-color {
+  background-color: #0e1c36;
+  color: #fff;
 }
