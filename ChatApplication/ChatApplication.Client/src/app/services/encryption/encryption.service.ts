@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { User, UserMessage } from '../../models/user/user';
 
 const pemHeader = "-----BEGIN PUBLIC KEY-----";
 const pemFooter = "-----END PUBLIC KEY-----";
@@ -55,35 +56,41 @@ export class EncryptionService {
     );
   }
 
-  encryptMessage = async (publicKeys:CryptoKey[], message:string) => {
+  encryptMessage = async (recipients: User[], message:string) => {
     const encoder = new TextEncoder();
     const data = encoder.encode(message);
 
     const encryptedMessages = await Promise.all(
-        publicKeys.map(async (publicKey) => {
-            return window.crypto.subtle.encrypt(
+        recipients.map(async (user) => {
+            const encryptedMessage = await window.crypto.subtle.encrypt(
                 {
                     name: "RSA-OAEP"
                 },
-                publicKey,
+                user.publicKey,
                 data
             );
+            const exportedAsString = this.ab2str(encryptedMessage);
+            const exportedAsBase64 = window.btoa(exportedAsString);
+            var messageData: UserMessage = { id: user.id, message: exportedAsBase64 };
+            return messageData;
         })
     );
-    // Convert each ArrayBuffer to a Base64 string
-    const encryptedMessagesBase64 = encryptedMessages.map(buffer => {
-      const exportedAsString = this.ab2str(buffer);
-      const exportedAsBase64 = window.btoa(exportedAsString);
-      return exportedAsBase64;
-    });
-
     
-    return encryptedMessagesBase64;
+    return encryptedMessages;
   }
 
-  decryptMessage = async (privateKey:CryptoKey, encryptedMessage:string) => {
+  decryptMessage = async (privateKey:CryptoKey, messageRecord:UserMessage[], id:string) => {
+    // Find the encrypted message for the recipient
+    const recipientMessage = messageRecord.find(
+      msg => msg.id === id
+    );
+
+    if (!recipientMessage) {
+      throw new Error("No message found for the recipient.");
+    }
+    
     // base64 decode the string to get the binary data
-    const binaryDerString = window.atob(encryptedMessage);
+    const binaryDerString = window.atob(recipientMessage?.message);
     // convert from a binary string to an ArrayBuffer
     const binaryDer = this.str2ab(binaryDerString);
 
