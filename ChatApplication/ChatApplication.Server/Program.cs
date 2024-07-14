@@ -1,4 +1,7 @@
+using ChatApplication.DataAccess;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -8,6 +11,10 @@ ConfigurationManager configuration = builder.Configuration;
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddSignalR();
+
+var adminConnectionString = builder.Configuration.GetSection("AdminConnectionString").Value ?? "";
+builder.Services.AddDbContext<ChatAppContext>(options => options.UseNpgsql(adminConnectionString));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
