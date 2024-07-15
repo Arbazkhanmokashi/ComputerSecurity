@@ -41,6 +41,16 @@ input[type="text"] {
     margin-top: 10px;
     box-sizing: border-box;
 }
+button {
+    padding: 10px;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
 
 
 
