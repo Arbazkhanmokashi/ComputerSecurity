@@ -13,7 +13,7 @@ header {
     padding: 1em;
     font-size: 1.5em;
 }
-.chat-container {
+chat-container {
     max-width: 800px;
     margin: 20px auto;
     background: white;
@@ -21,12 +21,12 @@ header {
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-.message {
+message {
     padding: 10px;
     margin-bottom: 10px;
     border-radius: 5px;
 }
-.message.sent {
+message.sent {
     background-color: #DCF8C6;
     text-align: right;
 }
