@@ -26,5 +26,10 @@ header {
     margin-bottom: 10px;
     border-radius: 5px;
 }
+.message.sent {
+    background-color: #DCF8C6;
+    text-align: right;
+}
+
 
 
