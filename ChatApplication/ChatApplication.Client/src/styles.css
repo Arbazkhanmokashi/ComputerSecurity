@@ -30,6 +30,10 @@ message.sent {
     background-color: #DCF8C6;
     text-align: right;
 }
+message.received {
+    background-color: #EDEDED;
+}
+
 
 
 
