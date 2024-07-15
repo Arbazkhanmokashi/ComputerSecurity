@@ -33,6 +33,14 @@ message.sent {
 message.received {
     background-color: #EDEDED;
 }
+input[type="text"] {
+    width: calc(100% - 60px);
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 10px;
+    box-sizing: border-box;
+}
 
 
 
