@@ -21,6 +21,8 @@
     "@angular/platform-browser": "^17.3.0",
     "@angular/platform-browser-dynamic": "^17.3.0",
     "@angular/router": "^17.3.0",
+    "@auth0/angular-jwt": "^5.2.0",
+    "@octokit/rest": "^21.0.1",
     "@types/google-one-tap": "^1.2.6",
     "firebase": "^10.12.3",
     "jest-editor-support": "*",
