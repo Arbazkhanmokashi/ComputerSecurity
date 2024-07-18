@@ -1,32 +1,18 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase } from '@angular/fire/compat/database';
-import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class KeyStorageService {
-  private basePath = '/pub-keys';
+  private privateKeyStorageName = "user-key";
 
-  constructor(private db: AngularFireDatabase) { }
+  constructor() { }
 
-  addItem(item: any): void {
-    this.db.list(this.basePath).push(item);
+  storeKey = (key:string) =>{
+    localStorage.setItem(this.privateKeyStorageName, key);
   }
 
-  getItems(): Observable<any[]> {
-    return this.db.list(this.basePath).valueChanges();
-  }
-
-  getItem(key: string): Observable<any> {
-    return this.db.object(`${this.basePath}/${key}`).valueChanges();
-  }
-
-  updateItem(key: string, value: any): void {
-    this.db.list(this.basePath).update(key, value);
-  }
-
-  deleteItem(key: string): void {
-    this.db.list(this.basePath).remove(key);
+  retrieveKey = () => {
+    return localStorage.getItem(this.privateKeyStorageName);
   }
 }

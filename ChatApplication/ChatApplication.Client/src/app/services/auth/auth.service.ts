@@ -5,6 +5,8 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import firebase from 'firebase/compat/app';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 declare const google: any;
 
@@ -18,14 +20,48 @@ export class AuthService {
   public user$ = this.userSubject.asObservable();
   public userTest : any = null;
 
-  constructor(private afAuth: AngularFireAuth, private ngZone: NgZone) {
-    this.initializeGoogleOneTap();
-    this.afAuth.authState.subscribe(user => {
-      // this.userTest = user;
-      this.userSubject.next(user);
-    });
+  //github
+  private clientId = environment.githubConfig.clientId;
+  private clientSecret = environment.githubConfig.clientSecret;
+  private redirectUri = environment.githubConfig.redirectURL;
+  private backendUrl = environment.backendUrl + "api/auth/github"
+
+  constructor(private afAuth: AngularFireAuth, private ngZone: NgZone, private http: HttpClient, private router: Router) {
+    // this.initializeGoogleOneTap();
+    // this.afAuth.authState.subscribe(user => {
+    //   // this.userTest = user;
+    //   this.userSubject.next(user);
+    // });
   }
 
+  //github authentication logic
+  loginWithGitHub() {
+    const githubAuthUrl = `https://github.com/login/oauth/authorize?client_id=${this.clientId}&redirect_uri=${this.redirectUri}&scope=repo`;
+    window.location.href = githubAuthUrl;
+  }
+
+  handleAuthCallback(code: string) {
+    return this.http.post(`${this.backendUrl}`, { code });
+  }
+
+  setSession(authResult: any) {
+    localStorage.setItem('access_token', authResult.access_token);
+  }
+
+  logout() {
+    localStorage.removeItem('access_token');
+    this.router.navigate(['/']);
+  }
+
+  getToken() {
+    return localStorage.getItem('access_token');
+  }
+
+  isAuthenticated(): boolean {
+    return !!this.getToken();
+  }
+
+  //Google authentication logic
   private initializeGoogleOneTap() {
     window.onload = () => {
       google.accounts.id.initialize({
