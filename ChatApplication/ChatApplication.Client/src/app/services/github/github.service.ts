@@ -63,4 +63,8 @@ export class GithubService {
 
     return this.http.put(`${this.apiUrl}/repos/${this.repoName}/contents/${fileName}`, body, { headers });
   }
+
+  getPublicKey(repoOwner: string, repoName: string, fileName: string) {
+    return this.http.get(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${fileName}`);
+  }
 }
