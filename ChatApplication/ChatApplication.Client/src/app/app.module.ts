@@ -35,12 +35,16 @@ import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { HomeComponent } from './components/protected/home/home.component';
 import { AuthService } from './services/auth/auth.service';
+import { JoinChatComponent } from './components/protected/joinChat/join-chat/join-chat.component';
+import { AuthCallbackComponent } from './components/auth-callback/auth-callback.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    HomeComponent
+    HomeComponent,
+    JoinChatComponent,
+    AuthCallbackComponent
   ],
   imports: [
     BrowserModule,

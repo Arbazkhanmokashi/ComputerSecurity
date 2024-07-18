@@ -9,6 +9,7 @@ import { environment } from '../../../environments/environment';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import firebase from 'firebase/compat/app';
 import { KeyStorageService } from '../../services/keyStorage/key-storage.service';
+import { EncryptionService } from '../../services/encryption/encryption.service';
 
 @Component({
   selector: 'app-login',
@@ -21,6 +22,11 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   public user$ = this.userSubject.asObservable();
   publicKey$!: Observable<any>;
 
+  aliceKeyPair!: CryptoKeyPair;
+  bobKeyPair!: CryptoKeyPair;
+  catyKeyPair!: CryptoKeyPair;
+  enrcryptedMessage!: string;
+
   // private _destroySub$ = new Subject<void>();
   // private readonly returnUrl: string;
 
@@ -30,24 +36,20 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
     private _ngZone: NgZone,
     private sessionService: SessionService,
     private afAuth: AngularFireAuth,
-    private dbService: KeyStorageService
+    private dbService: KeyStorageService,
+    private encryption: EncryptionService
   ) {
   }
   ngAfterViewInit(): void {
-    //this.initialiseGoogleOneTap();
   }
 
   public ngOnInit(): void {
-    console.log("initialised")
-    //this.initialiseGoogleOneTap();
-  }
-
-  getEmail() : void{
-    console.log(this.service.getUserEmail());
-    console.log(this.service.isLoggedIn())
   }
 
   public ngOnDestroy(): void {
-    // this._destroySub$.next();
+  }
+
+  login(){
+    this.service.loginWithGitHub();
   }
 }
