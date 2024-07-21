@@ -11,21 +11,37 @@ import { Octokit } from '@octokit/rest';
 export class GithubService {
 
   private apiUrl = 'https://api.github.com';
+  private fileName = 'UserPubkey.pub'
   private repoName = environment.githubConfig.repositoryName;
 
-  constructor(private http: HttpClient, private authService: AuthService) { }
+  constructor(private http: HttpClient, private authService: AuthService) 
+  {
+  }
 
-  getUsername(){
+  getUserDetails = async() => {
     var accessToken = this.authService.getToken();
     const octokit = new Octokit({
       auth: accessToken
     })
-    
-    return octokit.request('GET /user', {
+    var response = await octokit.request('GET /user', {
       headers: {
         'X-GitHub-Api-Version': '2022-11-28'
       }
     })
+
+    if(response.status == 200)
+      return response.data;
+
+    return null;
+  }
+
+  getUsername = async() => {    
+    var response = await this.getUserDetails();
+
+    if(response != null)
+      return response.login;
+
+    return null;
   }
 
   checkRepositoryExists(): Observable<boolean> {
@@ -53,18 +69,52 @@ export class GithubService {
     return this.http.post(`${this.apiUrl}/user/repos`, body, { headers });
   }
 
-  uploadFileToRepo(fileName: string, content: string) {
-    const accessToken = this.authService.getToken();
-    const headers = { Authorization: `token ${accessToken}` };
-    const body = {
-      message: 'add public key',
-      content: btoa(content)
-    };
-
-    return this.http.put(`${this.apiUrl}/repos/${this.repoName}/contents/${fileName}`, body, { headers });
+  createOrUpdateFile = async(content: string) => {
+    var accessToken = this.authService.getToken();
+    const octokit = new Octokit({
+      auth: accessToken
+    })
+    var userDetails = await this.getUserDetails();
+    var info = { 
+      owner : userDetails?.login == undefined ? '' : userDetails?.login, 
+      name: userDetails?.name == null ? '' : userDetails?.name, 
+      email: userDetails?.email == null ? '' : userDetails?.email};
+    return octokit.request('PUT /repos/{owner}/{repo}/contents/{path}', {
+      owner: info.owner,
+      repo: this.repoName,
+      path: this.fileName,
+      message: 'updated pub key',
+      committer: {
+        name: info.name,
+        email: info.email
+      },
+      content: content,
+      headers: {
+        'X-GitHub-Api-Version': '2022-11-28'
+      }
+    })
   }
 
-  getPublicKey(repoOwner: string, repoName: string, fileName: string) {
-    return this.http.get(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${fileName}`);
+  getFileSha(username: string): Observable<any> {
+    const accessToken = this.authService.getToken();
+    const headers = { Authorization: `token ${accessToken}` };
+
+    return this.http.get(`${this.apiUrl}/repos/${username}/${this.repoName}/contents/${this.fileName}`, { headers });
+  }
+  
+  uploadFileToRepo = (username: string, content: string, sha: string | null) => {
+    const accessToken = this.authService.getToken();
+    const headers = { Authorization: `token ${accessToken}`, 'Content-Type': 'application/json' };
+    const body = {
+      message: 'add public key',
+      content: btoa(content),
+      sha: sha
+    };
+
+    return this.http.put(`${this.apiUrl}/repos/${username}/${this.repoName}/contents/${this.fileName}`, body, { headers });
+  }
+
+  getPublicKey(repoOwner: string) {
+    return this.http.get(`https://api.github.com/repos/${repoOwner}/${this.repoName}/contents/${this.fileName}`);
   }
 }
