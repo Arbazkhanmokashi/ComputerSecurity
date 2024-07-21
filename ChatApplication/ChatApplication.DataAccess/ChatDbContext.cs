@@ -37,6 +37,11 @@ namespace ChatApplication.DataAccess
                 .HasForeignKey(gu => gu.ChatRoomId);
 
             modelBuilder.Entity<Message>()
+                .HasOne(gu => gu.Sender)
+                .WithMany(g => g.MessagesSent)
+                .HasForeignKey(gu => gu.SenderId);
+
+            modelBuilder.Entity<Message>()
                 .Property(p => p.Content)
                 .HasConversion(
                     v => JsonSerializer.Serialize(v, new JsonSerializerOptions { DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull }),
