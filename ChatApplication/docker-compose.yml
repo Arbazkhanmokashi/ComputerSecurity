@@ -1,0 +1,55 @@
+version: "3.8"
+
+services:
+  texter.api:
+    image: ${DOCKER_REGISTRY-}texter.api
+    user: root
+    container_name: texter.api
+    restart: unless-stopped
+    build:
+      context: ../ChatApplication
+      dockerfile: ./ChatApplication.Server/Dockerfile
+    expose:
+      - "5005"
+      - "5006"
+    ports:
+      - "5005:5005"
+      - "5006:5006"
+    volumes:
+      - /home/akshayn/DevelopersDen/aspnetapp.pfx:/https/aspnetapp.pfx:ro
+    networks:
+      - texternet
+  texter.web:
+    container_name: texter.web
+    restart: unless-stopped
+    build:
+     context: ./ChatApplication.Client
+     dockerfile: ./Dockerfile
+    expose:
+      - '5008'
+    ports:
+      - "5008:5008"
+    depends_on:
+      - texter.api
+    networks:
+      - texternet
+  texter.nginx:
+    image: nginx:latest
+    container_name: texter.nginx
+    expose:
+      - '5008'
+    ports:
+      - "80:80"
+      - "443:443"
+      - "5008:5008"
+    volumes:
+      - ./ChatApplication.Nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - /home/akshayn/DevelopersDen/akshaynambly_info_chain.crt:/etc/ssl/certs/akshaynambly_info_chain.crt
+      - /home/akshayn/DevelopersDen/akshaynambly_info.key:/etc/ssl/private/akshaynambly_info.key
+    depends_on:
+      - texter.api
+      - texter.web
+    networks:
+      - texternet
+networks:
+  texternet:
