@@ -1,11 +1,18 @@
-<div class = "container">
-  <div class= "row">
-    <div class= "col-md-6 center offset-md-3">
-      <h2 class= "text-center text-dark mt-5">"Welcome !!!!"</h2>
-      <div class="text-center mb-5 text-dark">Please Join the Room to start Chatting</div>
-      <div class="card my-5">
-         <button routerLink="/join-room" class="btn btn-success w-100 text-center">Join Room Now</button>
-      </div>
+<div class="chat-container">
+  <div class="user-list">
+    <input type="text" [(ngModel)]="searchQuery" (input)="searchUsers()" placeholder="Search users..." />
+    <ul>
+      <li *ngFor="let user of filteredUsers" (click)="selectUser(user)">
+        {{ user }}
+      </li>
+    </ul>
+  </div>
+  <div class="chat-box">
+    <h2 *ngIf="selectedUser">Chat with {{ selectedUser }}</h2>
+    <div class="messages">
+      <div *ngFor="let msg of messages">{{ msg.message }}</div>
     </div>
+    <input [(ngModel)]="message" placeholder="Type a message..." />
+    <button (click)="sendMessage()">Send</button>
   </div>
 </div>

@@ -1,13 +1,51 @@
-.container {
-  max-width: 100%;
+.chat-container {
+  display: flex;
   height: 100vh;
-  margin: auto;
-  background-color: #52ACFF;
-  background-image: linear-gradient(180deg, #52ACFF 25%, #FFE32C 100%);
 }
 
-.center {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
+.user-list {
+  width: 30%;
+  border-right: 1px solid #ccc;
+  padding: 10px;
+}
+
+.user-list input {
+  width: 100%;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+
+.user-list ul {
+  list-style: none;
+  padding: 0;
+}
+
+.user-list li {
+  padding: 5px;
+  cursor: pointer;
+}
+
+.user-list li:hover {
+  background-color: #f0f0f0;
+}
+
+.chat-box {
+  width: 70%;
+  padding: 10px;
+}
+
+.messages {
+  height: calc(100vh - 100px);
+  overflow-y: auto;
+  border-bottom: 1px solid #ccc;
+  padding: 10px;
+}
+
+input {
+  width: calc(100% - 60px);
+  padding: 5px;
+}
+
+button {
+  padding: 5px
 }
