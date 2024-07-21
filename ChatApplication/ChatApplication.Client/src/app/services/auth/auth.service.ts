@@ -46,15 +46,21 @@ export class AuthService {
 
   setSession(authResult: any) {
     localStorage.setItem('access_token', authResult.access_token);
+    localStorage.setItem('jwt_token', authResult.jwt_token);
   }
 
   logout() {
     localStorage.removeItem('access_token');
+    localStorage.removeItem('jwt_token');
     this.router.navigate(['/']);
   }
 
   getToken() {
     return localStorage.getItem('access_token');
+  }
+
+  getJWTToken() {
+    return localStorage.getItem('jwt_token');
   }
 
   isAuthenticated(): boolean {
