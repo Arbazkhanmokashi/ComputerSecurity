@@ -4,6 +4,9 @@ import { AuthService } from '../../services/auth/auth.service';
 import { KeyStorageService } from '../../services/keyStorage/key-storage.service';
 import { EncryptionService } from '../../services/encryption/encryption.service';
 import { GithubService } from '../../services/github/github.service';
+import { UtilityService } from '../../services/utility/utility.service';
+import { UserPublicKey } from '../../models/user/user';
+import { UserKeySetupService } from '../../services/user-key-setup/user-key-setup.service';
 
 @Component({
   selector: 'app-auth-callback',
@@ -14,9 +17,7 @@ export class AuthCallbackComponent implements OnInit {
   constructor(private route: ActivatedRoute, 
     private authService: AuthService, 
     private router: Router, 
-    private keyService: KeyStorageService, 
-    private encryptionService: EncryptionService,
-    private githubService: GithubService
+    private userKeySetupService: UserKeySetupService
   ) { }
 
   ngOnInit() {
@@ -25,29 +26,15 @@ export class AuthCallbackComponent implements OnInit {
         this.authService.handleAuthCallback(params['code']).subscribe((authResult: any) => {
           console.log("Logged in successfully")
           this.authService.setSession(authResult);
-          this.userProfileSetup();
-          this.router.navigate(['/home']);
+          this.userKeySetupService.setup().then(res => {
+            if(res)
+              this.router.navigate(['/home']);
+            else
+              this.router.navigate(['/login']);
+          });
         });
       }
     });
   }
 
-  userProfileSetup = () => {
-    var key = this.keyService.retrieveKey();
-    if(key == undefined || key == ''){
-      //generate key-value pair
-      this.encryptionService.generateKeyPair().then(res => {
-        this.encryptionService.exportKeyAsString(res.privateKey).then(res => this.keyService.storeKey(res));
-        
-        
-        this.encryptionService.exportKeyAsString(res.publicKey).then(res => {
-          if(this.authService.isAuthenticated()){
-            
-          }
-        });
-      }).catch(err => {
-        console.error("Error while generating keys");
-      })
-    }
-  }
 }
