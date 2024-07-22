@@ -29,8 +29,10 @@ services:
       - '5008'
     ports:
       - "5008:5008"
+    volumes:
+      - ./ChatApplication.Client/certs:/etc/nginx/ssl
     depends_on:
-      - texter.nginx
+      - texter.api
     networks:
       - texternet
   texter.nginx:
@@ -45,6 +47,7 @@ services:
       - /home/akshayn/DevelopersDen/akshaynambly_info.key:/etc/ssl/private/akshaynambly_info.key
     depends_on:
       - texter.api
+      - texter.web
     networks:
       - texternet
 networks:
