@@ -10,7 +10,5 @@ RUN npm run build --prod
 FROM nginx:alpine
 COPY --from=build /app/dist/chat-application.client/browser /usr/share/nginx/html
 COPY nginx/default.conf /etc/nginx/conf.d/default.conf
-COPY /home/akshayn/DevelopersDen/akshaynambly_info_chain.crt /etc/ssl/certs/akshaynambly_info_chain.crt
-COPY /home/akshayn/DevelopersDen/akshaynambly_info.key /etc/ssl/private/akshaynambly_info.key
 
 EXPOSE 5008
