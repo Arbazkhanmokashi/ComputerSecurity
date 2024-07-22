@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UtilityService {
 
-  constructor() { }
+  constructor(private matSnackBar: MatSnackBar) { }
 
   getUniqueGUID = () : string => {
     function s4(): string {
@@ -16,5 +17,9 @@ export class UtilityService {
     return (
       s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4()
     );
+  }
+
+  openSnackBar(message: string) {
+    this.matSnackBar.open(message, 'Dismiss', { duration: 3000 });
   }
 }

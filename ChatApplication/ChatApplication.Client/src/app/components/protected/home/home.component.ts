@@ -15,25 +15,44 @@ export class HomeComponent implements OnInit {
   deviceNumber!:string|null;
   message = '';
   messages: ChatInfo[] = [];
+  selectedMessages: ChatInfo[] = [];
   searchQuery = '';
   filteredUsers: string[] = [];
   selectedUser: string | null = null;
+  username!:string | null;
 
   constructor(
     private chatService: ChatService, 
     private githubService: GithubService, 
     private keyService: KeyStorageService,
     private encryptionService: EncryptionService
-  ) {}
+  ) {
+    this.githubService.getUsername().then(res => { 
+      this.username = res;
+      if(this.username != null){
+        var index = this.filteredUsers.indexOf(this.username);
+        if(index != -1)
+          this.filteredUsers.splice(index, 1);
+      }
+     });
+  }
 
   ngOnInit(): void {
     this.privateKey = this.keyService.retrieveKey();
     this.deviceNumber = this.keyService.retrieveDeviceNumber();
     this.chatService.messages$.subscribe(messages => {
       this.messages = messages;
+      this.filterMessages();
+      console.log(this.messages);
     });
     this.chatService.onlineUsers$.subscribe(users => {
       this.filteredUsers = users;
+      if(this.username != null){
+        var index = users.indexOf(this.username);
+        if(index != -1)
+          this.filteredUsers.splice(index, 1);
+      }
+      console.log(users);
     });
     // this.chatService.joinGroup('default-group');
   }
@@ -55,6 +74,9 @@ export class HomeComponent implements OnInit {
         const ciphertext = this.encryptionService.symmetricEncryption(JSON.stringify(messages));
         if(this.selectedUser != null){
           this.chatService.sendMessage(this.selectedUser, ciphertext);
+          const msgInfo: ChatInfo = { sender: 'self', time: Date.now(), recipient: this.selectedUser, message: this.message };
+          this.messages.push(msgInfo);
+          this.filterMessages();
           this.message = '';
         }
       });
@@ -70,6 +92,15 @@ export class HomeComponent implements OnInit {
 
   selectUser(user: string): void {
     this.selectedUser = user;
+    this.filterMessages();
+  }
+
+  filterMessages(): void{
+    if(this.selectedUser != null){
+      this.selectedMessages = this.messages.filter(x => {
+        return x.recipient == this.selectedUser || x.sender == this.selectedUser
+      }).sort((a,b) => a.time - b.time);
+    }
   }
 
 }

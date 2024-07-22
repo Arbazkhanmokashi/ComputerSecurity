@@ -54,3 +54,9 @@ mat-list-item:hover {
   flex: 1;
   margin-right: 8px;
 }
+
+.no-chat{
+  height: 80%;
+  align-content: center;
+  text-align: center;
+}

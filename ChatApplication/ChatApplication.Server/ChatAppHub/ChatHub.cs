@@ -32,10 +32,11 @@ namespace ChatApplication.Server.ChatAppHub
 
         public override async Task OnDisconnectedAsync(Exception exception)
         {
-            if (Users.TryRemove(Context.ConnectionId, out var username))
+            var user = Context.User.Identity.Name;
+            if (Users.TryRemove(user, out var connectionId))
             {
-                await Clients.All.SendAsync("UserDisconnected", username);
-                await Clients.All.SendAsync("UpdateUserList", Users.Values.Distinct().ToList());
+                await Clients.All.SendAsync("UserDisconnected", user);
+                await Clients.All.SendAsync("UpdateUserList", Users.Keys.Distinct().ToList());
             }
 
             await base.OnDisconnectedAsync(exception);

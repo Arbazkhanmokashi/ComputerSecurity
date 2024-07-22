@@ -7,6 +7,9 @@ import { EncryptionService } from '../encryption/encryption.service';
 import { KeyStorageService } from '../keyStorage/key-storage.service';
 import { GithubService } from '../github/github.service';
 import { environment } from '../../../environments/environment';
+import { AuthService } from '../auth/auth.service';
+import { Router } from '@angular/router';
+import { UtilityService } from '../utility/utility.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +24,14 @@ export class ChatService {
   private onlineUsersSubject = new BehaviorSubject<string[]>([]);
   public onlineUsers$ = this.onlineUsersSubject.asObservable();
 
-  constructor(private encryptionService: EncryptionService, private keyService: KeyStorageService, private githubService: GithubService) {
+  constructor(
+    private encryptionService: EncryptionService, 
+    private keyService: KeyStorageService, 
+    private githubService: GithubService,
+    private authService: AuthService,
+    private router: Router, 
+    private utilityService: UtilityService
+  ) {
     this.createConnection();
     this.startConnection();
     this.startMessageSetup();
@@ -40,6 +50,12 @@ export class ChatService {
   }
 
   private startConnection() {
+    if (this.authService.isTokenExpired()) {
+      this.authService.logout();
+      this.router.navigate(['/login']);
+      this.utilityService.openSnackBar('Token has expired. Please login again');
+      return;
+    }
     if (this.hubConnection.state === signalR.HubConnectionState.Disconnected) {
       this.hubConnection.start()
         .then(() => console.log('Connection started'))
@@ -118,10 +134,11 @@ export class ChatService {
         try{
           var decryptedMessage = this.encryptionService.decryptMessage(messageForCurrDevice.message, privateKey, pubKey.key);
           console.log(decryptedMessage);
-          const chatInfo: ChatInfo = { sender: sender, message: decryptedMessage };
+          const chatInfo: ChatInfo = { sender: sender, message: decryptedMessage, time: Date.now(), recipient: 'self' };
           const chats = this.messagesSubject.value;
           chats.push(chatInfo);
           this.messagesSubject.next(chats);
+          this.utilityService.openSnackBar(`${sender} has sent you a message`);
           return false;
         }catch(e){return true;}
       });
@@ -136,6 +153,12 @@ export class ChatService {
   }
 
   public sendMessage(user: string, message: string) {
+    if (this.authService.isTokenExpired()) {
+      this.authService.logout();
+      this.router.navigate(['/login']);
+      this.utilityService.openSnackBar('Token has expired. Please login again');
+      return;
+    }
     this.hubConnection.invoke('SendMessageToUser', user, message)
       .catch(err => console.error(err));
   }
@@ -169,11 +192,13 @@ export class ChatService {
   }
 
   private removeOnlineUser(username: string) {
+    console.log(username + " has signed out");
     const users = this.onlineUsersSubject.value;
     const index = users.indexOf(username);
     if (index > -1) {
       users.splice(index, 1);
       this.onlineUsersSubject.next(users);
+      this.utilityService.openSnackBar(`${username} has signed out`)
     }
   }
 }

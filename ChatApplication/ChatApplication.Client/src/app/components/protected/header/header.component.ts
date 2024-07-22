@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { KeyStorageService } from '../../../services/keyStorage/key-storage.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth/auth.service';
+import { ChatService } from '../../../services/chat/chat.service';
 
 @Component({
   selector: 'app-header',
@@ -11,13 +11,14 @@ import { AuthService } from '../../../services/auth/auth.service';
 export class HeaderComponent  implements OnInit {
   public isAuthenticated = false;
 
-  constructor(private keyStorageService: KeyStorageService, private router: Router, private authService: AuthService){}
+  constructor(private chatService: ChatService, private router: Router, private authService: AuthService){}
 
   ngOnInit(): void {
     this.isAuthenticated = this.authService.isAuthenticated();
   }
   logout = () => {
     this.authService.logout();
+    this.chatService.stopConnection();
     this.router.navigate(["/login"]);
   }
 }

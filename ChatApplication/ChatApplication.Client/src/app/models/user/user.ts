@@ -5,7 +5,9 @@ export interface User{
 
 export interface ChatInfo{
     sender:string,
-    message:string;
+    recipient:string,
+    message:string,
+    time: number,
 }
 
 export interface UserMessageDTO{

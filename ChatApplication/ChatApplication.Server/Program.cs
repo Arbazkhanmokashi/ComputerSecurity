@@ -16,7 +16,7 @@ builder.Services.AddControllers();
 builder.Services.AddSignalR();
 
 var adminConnectionString = builder.Configuration.GetSection("AdminConnectionString").Value ?? "";
-builder.Services.AddDbContext<ChatAppContext>(options => options.UseNpgsql(adminConnectionString));
+//builder.Services.AddDbContext<ChatAppContext>(options => options.UseNpgsql(adminConnectionString));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

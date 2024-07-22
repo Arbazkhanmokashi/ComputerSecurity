@@ -27,10 +27,12 @@ export class AuthCallbackComponent implements OnInit {
           console.log("Logged in successfully")
           this.authService.setSession(authResult);
           this.userKeySetupService.setup().then(res => {
-            if(res)
-              this.router.navigate(['/home']);
-            else
-              this.router.navigate(['/login']);
+            this.router.navigate(['/home']);
+            // console.log(res);
+            // if(res)
+            //   this.router.navigate(['/home']);
+            // else
+            //   this.router.navigate(['/login']);
           });
         });
       }

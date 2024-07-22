@@ -2,6 +2,7 @@ import { Injectable, NgZone } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { jwtDecode } from "jwt-decode";
 
 @Injectable({
   providedIn: 'root'
@@ -47,5 +48,18 @@ export class AuthService {
 
   isAuthenticated(): boolean {
     return !!this.getToken();
+  }
+
+  isTokenExpired(): boolean {
+    const token = this.getJWTToken();
+    if (!token) {
+      return true;
+    }
+
+    const decodedToken: any = jwtDecode(token);
+    const expirationDate = new Date(0);
+    expirationDate.setUTCSeconds(decodedToken.exp);
+
+    return expirationDate < new Date();
   }
 }
