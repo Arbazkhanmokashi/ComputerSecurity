@@ -6,7 +6,6 @@ import { AuthService } from '../../services/auth/auth.service';
 import { BehaviorSubject, last, Observable } from 'rxjs';
 import { SessionService } from '../../services/session/session.service';
 import { environment } from '../../../environments/environment';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
 import firebase from 'firebase/compat/app';
 import { KeyStorageService } from '../../services/keyStorage/key-storage.service';
 import { EncryptionService } from '../../services/encryption/encryption.service';
@@ -35,7 +34,6 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
     private service: AuthService,
     private _ngZone: NgZone,
     private sessionService: SessionService,
-    private afAuth: AngularFireAuth,
     private dbService: KeyStorageService,
     private encryption: EncryptionService
   ) {

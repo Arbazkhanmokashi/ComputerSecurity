@@ -31,8 +31,6 @@ import { RouterModule } from '@angular/router';
 // import { environment } from '../environments/environment';
 
 // import { AngularFireModule } from '@angular/fire/compat';
-import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
-import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { HomeComponent } from './components/protected/home/home.component';
 import { AuthService } from './services/auth/auth.service';
 import { AuthCallbackComponent } from './components/auth-callback/auth-callback.component';
@@ -70,9 +68,7 @@ import { AuthCallbackComponent } from './components/auth-callback/auth-callback.
     MatNativeDateModule,
     MatProgressSpinnerModule,
     FormsModule,
-    ReactiveFormsModule,
-    AngularFireDatabaseModule,
-    AngularFireAuthModule
+    ReactiveFormsModule
   ],
   providers: [
     provideAnimationsAsync(),
