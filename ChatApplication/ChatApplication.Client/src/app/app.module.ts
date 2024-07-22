@@ -27,6 +27,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatListModule } from '@angular/material/list';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterModule } from '@angular/router';
 // import { environment } from '../environments/environment';
 
@@ -34,13 +36,15 @@ import { RouterModule } from '@angular/router';
 import { HomeComponent } from './components/protected/home/home.component';
 import { AuthService } from './services/auth/auth.service';
 import { AuthCallbackComponent } from './components/auth-callback/auth-callback.component';
+import { HeaderComponent } from './components/protected/header/header.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     HomeComponent,
-    AuthCallbackComponent
+    AuthCallbackComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
@@ -67,6 +71,8 @@ import { AuthCallbackComponent } from './components/auth-callback/auth-callback.
     MatDatepickerModule,
     MatNativeDateModule,
     MatProgressSpinnerModule,
+    MatSidenavModule,
+    MatListModule,
     FormsModule,
     ReactiveFormsModule
   ],

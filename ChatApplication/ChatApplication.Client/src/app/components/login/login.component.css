@@ -1,0 +1,39 @@
+mat-card {
+    max-width: 400px;
+    margin: 2em auto;
+    text-align: center;
+    align-items: center;
+    padding: 2em;
+}
+  
+mat-form-field {
+    display: block;
+}
+
+.github-login-button {
+    display: flex;
+    align-items: center;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.github-login-button:hover {
+    background-color: #444;
+}
+
+.github-icon {
+    fill: #fff;
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+}
+
+.github-login-button:focus {
+    outline: none;
+}

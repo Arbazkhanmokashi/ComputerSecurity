@@ -1,6 +1,37 @@
-<div class="chat-container">
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav mode="side" opened class="sidenav">
+    <mat-toolbar color="primary">Online Users</mat-toolbar>
+      <mat-list>
+        <mat-list-item *ngFor="let user of filteredUsers" (click)="selectUser(user)">
+        <mat-icon mat-list-icon>person</mat-icon>
+        <h4 mat-line>{{ user }}</h4>
+        </mat-list-item>
+      </mat-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="content">
+    <mat-toolbar color="accent">Chat</mat-toolbar>
+    <div class="chat-window">
+      <mat-card *ngFor="let message of messages" class="chat-message">
+        <mat-card-content>
+          <p><strong>{{ message.sender }}:</strong> {{ message.message }}</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="chat-input-container">
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Type your message" [(ngModel)]="message">
+        <button mat-raised-button color="primary" (click)="sendMessage()">Send</button>
+      </mat-form-field>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+
+<!-- <div class="chat-container">
   <div class="user-list">
-    <input type="text" [(ngModel)]="searchQuery" (input)="searchUsers()" placeholder="Search users..." />
+    <mat-label>Search users</mat-label>
+    <input type="text" matInput [(ngModel)]="searchQuery" (input)="searchUsers()" placeholder="Search users..." />
     <ul>
       <li *ngFor="let user of filteredUsers" (click)="selectUser(user)">
         {{ user }}
@@ -15,4 +46,4 @@
     <input [(ngModel)]="message" placeholder="Type a message..." />
     <button (click)="sendMessage()">Send</button>
   </div>
-</div>
+</div> -->

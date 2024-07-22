@@ -1,0 +1,8 @@
+.container{
+    padding: 1em;
+    background-color: #f1f1f1;
+    height: 100%;
+}
+.example-spacer {
+    flex: 1 1 auto;
+}

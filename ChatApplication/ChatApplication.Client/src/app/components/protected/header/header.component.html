@@ -1,0 +1,24 @@
+<mat-toolbar color="primary" fxLayout="row" fxLayoutAlign="space-between center">
+    <span>
+      <button mat-button routerLink="/">Texter</button>
+    </span>
+    <button mat-button routerLink="/jobSeeker/home">
+      <mat-icon>home</mat-icon>
+      Home
+    </button>
+    <span class="example-spacer"></span>
+    <div fxLayout="row" fxShow="false" fxShow.gt-sm>
+      <button mat-button routerLink="/login" *ngIf="!isAuthenticated">
+        <mat-icon>power_settings_new</mat-icon>
+        Login
+      </button>
+      <label></label>
+      <button mat-button *ngIf="isAuthenticated" (click)="logout()">
+        <mat-icon>exit_to_app</mat-icon>
+        Logout
+      </button>
+    </div>
+</mat-toolbar>
+<div class="container">
+    <router-outlet />
+</div>

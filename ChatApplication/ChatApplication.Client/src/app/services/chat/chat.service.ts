@@ -6,6 +6,7 @@ import { ChatInfo, Message, UserMessageDTO, UserPublicKey } from '../../models/u
 import { EncryptionService } from '../encryption/encryption.service';
 import { KeyStorageService } from '../keyStorage/key-storage.service';
 import { GithubService } from '../github/github.service';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,7 @@ export class ChatService {
   private hubConnection!: signalR.HubConnection;
   private messagesSubject = new BehaviorSubject<ChatInfo[]>([]);
   public messages$ = this.messagesSubject.asObservable();
+  private chatHubUrl = environment.chatHubUrl;
 
   // Manage online users
   private onlineUsersSubject = new BehaviorSubject<string[]>([]);
@@ -33,7 +35,7 @@ export class ChatService {
       }
     };
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('https://localhost:7133/chatHub', options)
+      .withUrl(this.chatHubUrl, options)
       .build();
   }
 
