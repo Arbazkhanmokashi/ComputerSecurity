@@ -36,12 +36,9 @@ services:
   texter.nginx:
     image: nginx:latest
     container_name: texter.nginx
-    expose:
-      - '5008'
     ports:
       - "80:80"
       - "443:443"
-      - "5008:5008"
     volumes:
       - ./ChatApplication.Nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
       - /home/akshayn/DevelopersDen/akshaynambly_info_chain.crt:/etc/ssl/certs/akshaynambly_info_chain.crt
