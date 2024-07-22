@@ -28,14 +28,13 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RouterModule } from '@angular/router';
-import { environment } from '../environments/environment';
+// import { environment } from '../environments/environment';
 
-import { AngularFireModule } from '@angular/fire/compat';
+// import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { HomeComponent } from './components/protected/home/home.component';
 import { AuthService } from './services/auth/auth.service';
-import { JoinChatComponent } from './components/protected/joinChat/join-chat/join-chat.component';
 import { AuthCallbackComponent } from './components/auth-callback/auth-callback.component';
 
 @NgModule({
@@ -43,12 +42,11 @@ import { AuthCallbackComponent } from './components/auth-callback/auth-callback.
     AppComponent,
     LoginComponent,
     HomeComponent,
-    JoinChatComponent,
     AuthCallbackComponent
   ],
   imports: [
     BrowserModule,
-    AngularFireModule.initializeApp(environment.firebaseConfig),
+    // AngularFireModule.initializeApp(environment.firebaseConfig),
     AppRoutingModule,
     HttpClientModule,
     RouterModule,
