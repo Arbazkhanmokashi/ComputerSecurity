@@ -33,6 +33,11 @@ export class KeyStorageService {
     return null;
   }
 
+  deleteKeyAndDevice = () => {
+    localStorage.removeItem(this.deviceNumberStorageName);
+    localStorage.removeItem(this.privateKeyStorageName);
+  }
+
   storeDeviceNumber = (key:string) =>{
     localStorage.setItem(this.deviceNumberStorageName, key);
   }

@@ -3,6 +3,7 @@ import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { jwtDecode } from "jwt-decode";
+import { KeyStorageService } from '../keyStorage/key-storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class AuthService {
   private redirectUri = environment.githubConfig.redirectURL;
   private backendUrl = environment.backendUrl + "api/auth/github"
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router, private keyService: KeyStorageService) {}
 
   //github authentication logic
   loginWithGitHub() {
@@ -35,7 +36,8 @@ export class AuthService {
   logout() {
     localStorage.removeItem('access_token');
     localStorage.removeItem('jwt_token');
-    this.router.navigate(['/']);
+    this.keyService.deleteKeyAndDevice();
+    this.router.navigate(['/login']);
   }
 
   getToken() {

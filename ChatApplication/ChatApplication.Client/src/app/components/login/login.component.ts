@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   private userSubject = new BehaviorSubject<firebase.User | null>(null);
   public user$ = this.userSubject.asObservable();
   publicKey$!: Observable<any>;
-
+  allowLogin: boolean = false;
   aliceKeyPair!: CryptoKeyPair;
   bobKeyPair!: CryptoKeyPair;
   catyKeyPair!: CryptoKeyPair;
@@ -39,15 +39,30 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   ) {
   }
   ngAfterViewInit(): void {
+    this.checkForAllowLogin();
   }
 
   public ngOnInit(): void {
+    this.checkForAllowLogin();
   }
 
   public ngOnDestroy(): void {
   }
 
   login(){
-    this.service.loginWithGitHub();
+    if(this.allowLogin)
+      this.service.loginWithGitHub();
+  }
+
+  checkForAllowLogin(){
+    const githubToken = this.service.getToken();
+    const jwtToken = this.service.getJWTToken();
+    if(githubToken != null && jwtToken != null && !this.service.isTokenExpired()){
+      this._router.navigate(['/home']);
+    }
+    else{
+      this.service.logout();
+      this.allowLogin = true;
+    }
   }
 }
