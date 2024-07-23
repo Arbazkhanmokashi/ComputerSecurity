@@ -3,9 +3,6 @@ import * as forge from 'node-forge';
 import * as CryptoJS from 'crypto-js';
 import { environment } from '../../../environments/environment';
 
-const pemHeader = "-----BEGIN PUBLIC KEY-----";
-const pemFooter = "-----END PUBLIC KEY-----";
-
 @Injectable({
   providedIn: 'root'
 })

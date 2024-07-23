@@ -110,7 +110,6 @@ export class ChatService {
     }
   }
   private addMessage(sender: string, message: string) {
-    console.log(message);
     const decipheredMessage = this.encryptionService.symmetricDecryption(message);
     if(decipheredMessage != null){
       const messagesData: Message[] = JSON.parse(decipheredMessage) as Message[];
@@ -125,15 +124,12 @@ export class ChatService {
     if(val != undefined)
       messageForCurrDevice = val;
 
-    console.log(messageForCurrDevice);
     this.githubService.getPublicKey(sender).subscribe(res => {
       var response = JSON.parse(JSON.stringify(res));
       var keys = JSON.parse(window.atob(response.content)) as UserPublicKey[];
       keys.forEach(pubKey => {
-        console.log(pubKey.device);
         try{
           var decryptedMessage = this.encryptionService.decryptMessage(messageForCurrDevice.message, privateKey, pubKey.key);
-          console.log(decryptedMessage);
           const chatInfo: ChatInfo = { sender: sender, message: decryptedMessage, time: Date.now(), recipient: 'self' };
           const chats = this.messagesSubject.value;
           chats.push(chatInfo);

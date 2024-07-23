@@ -41,8 +41,6 @@ export class UserKeySetupService {
       throw new Error("Github Username is null")
 
     this.encryptionService.generateKeyPair().then(res => {
-      console.log(res.privateKey);
-      console.log(res.publicKey);
       //store private key
       this.keyService.storeKey(res.privateKey)
       
@@ -61,13 +59,11 @@ export class UserKeySetupService {
         }
         else
           userPublicKeys = [userKey, ...keys];
-        console.log(userPublicKeys)
         this.updateGitHubFile(JSON.stringify(userPublicKeys));
         success = true;
       }, err => {
         if(err.error.message == 'Not Found'){ //file not yet created
           userPublicKeys = [userKey];
-          console.log(userPublicKeys)
           this.updateGitHubFile(JSON.stringify(userPublicKeys)).then(res => success = res);
         }
       })

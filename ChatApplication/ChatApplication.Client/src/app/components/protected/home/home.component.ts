@@ -43,7 +43,6 @@ export class HomeComponent implements OnInit {
     this.chatService.messages$.subscribe(messages => {
       this.messages = messages;
       this.filterMessages();
-      console.log(this.messages);
     });
     this.chatService.onlineUsers$.subscribe(users => {
       this.filteredUsers = users;
@@ -52,7 +51,6 @@ export class HomeComponent implements OnInit {
         if(index != -1)
           this.filteredUsers.splice(index, 1);
       }
-      console.log(users);
     });
     // this.chatService.joinGroup('default-group');
   }
