@@ -1,5 +1,5 @@
 FROM nginx:latest
 
 COPY nginx.conf /etc/nginx/nginx.conf
-COPY /home/akshayn/DevelopersDen/akshaynambly_info_chain.crt /etc/ssl/certs/akshaynambly_info_chain.crt
-COPY /home/akshayn/DevelopersDen/akshaynambly_info.key /etc/ssl/private/akshaynambly_info.key
+COPY /home/akshayn/keys/cert.pem /etc/ssl/certs/cert.pem
+COPY /home/akshayn/keys/key.pem /etc/ssl/private/key.pem
