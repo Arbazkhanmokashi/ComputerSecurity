@@ -45,8 +45,10 @@ export class GithubService {
   }
 
   checkRepositoryExists(): Observable<boolean> {
+    const accessToken = this.authService.getToken();
+    const headers = { Authorization: `token ${accessToken}` };
     const url = `${this.apiUrl}/repos/${this.repoName}`;
-    return this.http.get(url).pipe(
+    return this.http.get(url, {headers}).pipe(
       map(() => true), // If the GET request succeeds, the repo exists
       catchError((error: HttpErrorResponse) => {
         if (error.status === 404) {
@@ -115,6 +117,8 @@ export class GithubService {
   }
 
   getPublicKey(repoOwner: string) {
-    return this.http.get(`https://api.github.com/repos/${repoOwner}/${this.repoName}/contents/${this.fileName}`);
+    const accessToken = this.authService.getToken();
+    const headers = { Authorization: `token ${accessToken}` };
+    return this.http.get(`https://api.github.com/repos/${repoOwner}/${this.repoName}/contents/${this.fileName}`, {headers});
   }
 }

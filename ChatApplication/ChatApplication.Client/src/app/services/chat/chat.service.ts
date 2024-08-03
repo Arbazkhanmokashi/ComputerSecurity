@@ -127,24 +127,30 @@ export class ChatService {
     this.githubService.getPublicKey(sender).subscribe(res => {
       var response = JSON.parse(JSON.stringify(res));
       var keys = JSON.parse(window.atob(response.content)) as UserPublicKey[];
-      keys.forEach(pubKey => {
-        try{
-          var decryptedMessage = this.encryptionService.decryptMessage(messageForCurrDevice.message, privateKey, pubKey.key);
-          const chatInfo: ChatInfo = { sender: sender, message: decryptedMessage, time: Date.now(), recipient: 'self' };
-          const chats = this.messagesSubject.value;
-          chats.push(chatInfo);
-          this.messagesSubject.next(chats);
-          this.utilityService.openSnackBar(`${sender} has sent you a message`);
-          return false;
-        }catch(e){return true;}
-      });
+      var decryptedMessage = this.decryptMessage(keys, messageForCurrDevice.message, privateKey);
+      if(decryptedMessage != null){
+        const chatInfo: ChatInfo = { sender: sender, message: decryptedMessage, time: Date.now(), recipient: 'self' };
+        const chats = this.messagesSubject.value;
+        chats.push(chatInfo);
+        this.messagesSubject.next(chats);
+        this.utilityService.openSnackBar(`${sender} has sent you a message`);
+      }
     });
     }
   }
 
-  private decryptMessage = async (sender: string, message: string):Promise<string | null> => {
+  private decryptMessage = (keys: UserPublicKey[], message: string, privateKey: string):string | null => {
     var decryptedMessage: string|null = null;
-    
+    for (let i = 0; i < keys.length; i++) {
+      try {
+        decryptedMessage = this.encryptionService.decryptMessage(message, privateKey, keys[i].key);
+        if (decryptedMessage) {
+          return decryptedMessage;
+        }
+      } catch (error) {
+        // Handle decryption error if necessary, otherwise, continue to the next key
+      }
+    }
     return decryptedMessage;
   }
 
